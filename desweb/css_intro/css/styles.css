@@ -1,0 +1,41 @@
+/* arquivo styles.css */
+/* selecionamos os elemento h1 aqui */
+#titulo {
+    color: green;
+    text-align: center;   
+}
+/* selecionamos os elemento p aqui */
+p#descricao {
+    color: blue;
+}
+
+p.promocao {
+    text-align: center;
+    background-color: lightgreen;
+}
+
+h1.promocao {
+    color: yellow;
+}
+
+.nova {
+    color: white;
+}
+
+p.final-pagina#rodape {
+    background-color: lightgray;
+    text-align: center;
+}
+
+.curso, .novo-curso {
+    background-color: aliceblue;
+}
+
+.novo-curso {
+    color: red;
+}
+
+.curso, .novo-curso, #contato {
+    padding: 12px;
+    border: 1px solid lightgray;
+}
