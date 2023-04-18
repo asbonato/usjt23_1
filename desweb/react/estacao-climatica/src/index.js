@@ -17,6 +17,7 @@ class App extends React.Component {
       estacao: null,
       data: null,
       icone: null,
+      mensagemDeErro: null
     };
   }
 
@@ -44,22 +45,29 @@ class App extends React.Component {
   };
 
   obterLocalizacao = () => {
-    window.navigator.geolocation.getCurrentPosition((posicao) => {
-      let data = new Date();
-      let estacao = this.obterEstacao(data, posicao.coords.latitude);
-      let icone = this.icones[estacao];
-      console.log(icone);
-      this.setState({
-        latitude: posicao.coords.latitude,
-        longitude: posicao.coords.longitude,
-        estacao: estacao,
-        data: data.toLocaleTimeString(),
-        icone: icone,
-      });
-    });
+    window.navigator.geolocation.getCurrentPosition(
+      (posicao) => {
+        let data = new Date();
+        let estacao = this.obterEstacao(data, posicao.coords.latitude);
+        let icone = this.icones[estacao];
+        console.log(icone);
+        this.setState({
+          latitude: posicao.coords.latitude,
+          longitude: posicao.coords.longitude,
+          estacao: estacao,
+          data: data.toLocaleTimeString(),
+          icone: icone,
+        });
+      },
+      (erro) => {
+        console.log(erro)
+        this.setState({mensagemDeErro: 'Tente novamente mais tarde'})
+      }
+    );
   };
 
   render() {
+    console.log(this.state)
     return (
       //responsividade, margem acima
       <div className="container mt-2">
@@ -87,8 +95,11 @@ class App extends React.Component {
                 <div className="text-center">
                   {/** renderização condicional */}
                   {
-                    this.state.latitude?
+                    this.state.latitude ?
                     `Coordenadas:${this.state.latitude}, ${this.state.longitude}. Data: ${this.state.data}`
+                    :
+                    this.state.mensagemDeErro ?
+                      `${this.state.mensagemDeErro}`
                     :
                     'Clique no botão para saber a sua estação climática'
                   }
