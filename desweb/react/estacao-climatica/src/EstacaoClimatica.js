@@ -1,8 +1,31 @@
-import React, { Component } from 'react'
-import ReactDOM from 'react-dom'
+import React, { Component } from "react";
+import ReactDOM from "react-dom";
 
 export default class EstacaoClimatica extends Component {
+  timer = null
+
+  state = {
+    data: null,
+  };
+
+  componentDidMount() {
+    console.log("componentDidMount")
+    this.timer = setInterval(() => {
+      this.setState({ data: new Date().toLocaleTimeString() })
+    }, 1000)
+  }
+
+  componentWillUnmount() {
+    console.log("componentWillUnmount")
+    clearInterval(this.timer);
+  }
+
+  componentDidUpdate() {
+    console.log("componentDidUpdate")
+  }
+
   render() {
+    console.log("render")
     return (
       <div className="card">
         {/** o corpo do cartão */}
@@ -10,40 +33,38 @@ export default class EstacaoClimatica extends Component {
           {/** centraliza verticalmente, margem abaixo */}
           <div
             className="d-flex align-items-center border rounded mb-2"
-            style={{ height: "6rem" }}>
+            style={{ height: "6rem" }}
+          >
             {/**ícone obtido do estado do componente */}
             <i className={`fas fa-5x ${this.props.icone}`}></i>
             {/** largura 75%, margem à esquerda (start), fs aumenta a fonte */}
-            <p className="w-75 ms-3 text-center fs-1">
-              {this.props.estacao}
-            </p>
+            <p className="w-75 ms-3 text-center fs-1">{this.props.estacao}</p>
           </div>
           <div className="text-center">
             {/** renderização condicional */}
-            {
-              this.props.latitude ?
-                `Coordenadas:${this.props.latitude}, ${this.props.longitude}. Data: ${this.props.data}`
-                :
-                this.props.mensagemDeErro ?
-                  `${this.props.mensagemDeErro}`
-                  :
-                  'Clique no botão para saber a sua estação climática'
-            }
+            {this.props.latitude
+              ? `Coordenadas:${this.props.latitude}, ${this.props.longitude}. Data: ${this.state.data}`
+              : this.props.mensagemDeErro
+              ? `${this.props.mensagemDeErro}`
+              : "Clique no botão para saber a sua estação climática"}
           </div>
           {/** botão azul (outline 100% de largura e margem acima) */}
-          <button onClick={this.obterLocalizacao}
-            className="btn btn-outline-primary w-100 mt-2">
+          <button
+            onClick={this.obterLocalizacao}
+            className="btn btn-outline-primary w-100 mt-2"
+          >
             Qual a minha estação?
           </button>
           <button
             className="btn btn-outline-danger w-100 mt-2"
-            onClick={() => ReactDOM.unmountComponentAtNode(
-              document.querySelector('#root')
-            )}>
+            onClick={() =>
+              ReactDOM.unmountComponentAtNode(document.querySelector("#root"))
+            }
+          >
             Unmount
           </button>
         </div>
       </div>
-    )
+    );
   }
 }

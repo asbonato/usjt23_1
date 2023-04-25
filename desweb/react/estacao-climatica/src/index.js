@@ -2,6 +2,7 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import React from "react";
 import ReactDOM from "react-dom";
 import EstacaoClimatica from "./EstacaoClimatica";
+import Loading from "./Loading";
 
 class App extends React.Component {
   icones = {
@@ -105,15 +106,25 @@ class App extends React.Component {
               para telas médias em diante */}
           <div className="col-md-8">
             {/**um cartão Bootstrap */}
-            <EstacaoClimatica 
-              icone={this.state.icone}
-              estacao={this.state.estacao}
-              latitude={this.state.latitude}
-              longitude={this.state.longitude}
-              data={this.state.data}
-              mensagemDeErro={this.state.mensagemDeErro}
-              obterLocalizacao={this.obterLocalizacao}
-            />
+            {
+              (!this.state.latitude && !this.state.mensagemDeErro)?
+                <Loading mensagem = 'Por favor, responda à solicitação de localização.'/>
+              :
+                this.state.mensagemDeErro?
+                  <p className="border rounded p-2 fs-1 text-center">
+                    É preciso dar permissão para o acesso à localização.
+                    Atualize a página e tente de novo, ajustando a configuração
+                    no seu navegador.
+                  </p>
+                :
+                  <EstacaoClimatica 
+                    icone={this.state.icone}
+                    estacao={this.state.estacao}
+                    latitude={this.state.latitude}
+                    longitude={this.state.longitude}
+                    obterLocalizacao={this.obterLocalizacao}
+                  />  
+            }
           </div>
         </div>
       </div>
